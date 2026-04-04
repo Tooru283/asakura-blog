@@ -1,7 +1,7 @@
 ---
 title: P-SR【聞こえててよ、babe】
 pubDate: 2026-03-18
-description: "P-SR【聞こえててよ、babe】（听见没有啊，babe / Hear me, babe），在所有浅仓透的考据党和核心玩家心中，有着极其特殊且无可撼动的地位。"
+description: "P-SR【聞こえててよ、babe】（听见没有啊，babe / Hear me, babe），在所有浅仓透的考据党和核心玩家心中，有着极其特殊..."
 category: 碎碎念
 image: ""
 draft: false

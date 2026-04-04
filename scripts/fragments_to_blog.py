@@ -14,9 +14,7 @@ BLOG_DEST_DIR = BASE_DIR / "src" / "content" / "blog" / "fragments"
 
 def slugify(name: str) -> str:
     """把文件名转为 URL 友好的 slug（保留日文/中文字符，用于 slugId）"""
-    # 去掉 .md 扩展名
     name = re.sub(r'\.md$', '', name)
-    # 替换空格为连字符
     name = name.replace(' ', '-')
     return name
 
@@ -27,18 +25,32 @@ def extract_first_heading(content: str) -> str | None:
         return match.group(1).strip()
     return None
 
+def sanitize_for_yaml(text: str, max_len: int = 70) -> str:
+    """清理文本，使其可以安全地作为 YAML 双引号字符串值使用"""
+    text = text.replace('\\', '')         # 先移除反斜杠
+    text = text.replace('"', '\\"')       # 转义双引号
+    text = text.replace('\n', ' ')        # 换行变空格
+    if len(text) > max_len:
+        text = text[:max_len] + '...'
+    return text.strip()
+
 def extract_first_paragraph(content: str) -> str:
     """提取正文第一段作为 description"""
     # 移除 frontmatter
     body = re.sub(r'^---[\s\S]*?---\n', '', content).strip()
-    # 移除标题
+    # 移除标题行、引用块、列表、代码块等
     body = re.sub(r'^#{1,6}\s+.+\n?', '', body, flags=re.MULTILINE)
+    body = re.sub(r'^>\s*.+\n?', '', body, flags=re.MULTILINE)
+    body = re.sub(r'^\s*[-*]\s+.+\n?', '', body, flags=re.MULTILINE)
+    body = re.sub(r'```[\s\S]*?```', '', body)
+    # 移除 markdown 加粗/斜体标记
+    body = re.sub(r'\*{1,2}(.+?)\*{1,2}', r'\1', body)
+    body = re.sub(r'_{1,2}(.+?)_{1,2}', r'\1', body)
     # 提取第一个非空段落
     for line in body.split('\n'):
         line = line.strip()
-        if line and not line.startswith(('#', '>', '-', '*', '`', '|')):
-            # 截断到 80 个字符
-            return line[:80] + ('...' if len(line) > 80 else '')
+        if line and not line.startswith(('#', '>', '-', '*', '`', '|', '---')):
+            return sanitize_for_yaml(line)
     return ''
 
 def convert_fragment_to_blog(fragment_path: Path):

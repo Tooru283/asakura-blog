@@ -1,7 +1,7 @@
 ---
 title: P-SSR【テープエンドの行き先】
 pubDate: 2026-03-18
-description: ""Parallel Collection（平行收藏）"系列通常带有一种"如果…"的if线色彩或强烈的非日常感。在这张卡中，透和制作人（P）共同面对了那盒磁带转到..."
+description: "\"Parallel Collection（平行收藏）\"系列通常带有一种\"如果…\"的if线色彩或强烈的非日常感。在这张卡中，透和制作人..."
 category: 碎碎念
 image: ""
 draft: false

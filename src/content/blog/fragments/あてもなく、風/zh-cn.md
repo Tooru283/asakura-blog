@@ -1,7 +1,7 @@
 ---
 title: P-SSR【あてもなく、風】
 pubDate: 2026-03-18
-description: "这张 **P-SSR【あてもなく、風】（毫无目的地、风 / 漫无目的地随风）**，是浅仓透的 **My Songs Collection（MSC）** 专属卡面..."
+description: "这张 P-SSR【あてもなく、風】（毫无目的地、风 / 漫无目的地随风），是浅仓透的 My Songs Collection（MSC） 专属..."
 category: 碎碎念
 image: ""
 draft: false

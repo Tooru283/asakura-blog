@@ -1,7 +1,7 @@
 ---
 title: 浅仓透 主线剧情脉络
 pubDate: 2026-03-18
-description: "浅仓透的个人剧情线是《偶像大师 闪耀色彩 SONG for PRISM》中最具文学性与哲学深度的故事之一。它沿着**「寻找→贪恋→挣扎→和解→镌刻」**的路径，..."
+description: "浅仓透的个人剧情线是《偶像大师 闪耀色彩 SONG for PRISM》中最具文学性与哲学深度的故事之一。它沿着「寻找→贪恋→挣扎→和解→镌..."
 category: 碎碎念
 image: ""
 draft: false
