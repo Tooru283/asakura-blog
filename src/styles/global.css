@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@import "./variables.css";
+@import "./special.css";
+@import "./scrollbar.css";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&display=swap');
+
+@layer base {
+
+  :root {
+    background-color: var(--bg-color);
+    background-image: var(--bg-color-gradient, none);
+    color: var(--text-color);
+  }
+
+  body {
+    @apply text-[--text-color];
+    background-color: var(--bg-color);
+    background-image: var(--bg-color-gradient, none);
+    background-attachment: fixed;
+    font-family: "Noto Sans SC", sans-serif;
+    overflow-y: scroll;
+  }
+  
+  /* Glassmorphism Classes for reuse */
+  .glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+  
+  /* Scroll reveal animation class */
+  .reveal-blur {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .reveal-blur.active {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+
+  ::selection {
+    background-color: var(--button-hover-color);
+    /* color: var(--text-color); */
+  }
+  
+  ::-moz-selection {
+    background-color: var(--button-hover-color);
+    /* color: var(--text-color); */
+  }
+
+}

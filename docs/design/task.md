@@ -1,0 +1,22 @@
+# Task List
+
+- [x] Environment Setup
+  - [x] Clone `Motues/Momo` template to `/Users/moca/Work/Python/Blog/asakura-blog`
+  - [/] Initialize `pnpm` and install dependencies
+  - [/] Add Svelte integration to Astro
+- [x] Visual Design & Global Styles
+  - [x] Implement Glassmorphism and global color schemes in `src/styles/global.css`
+  - [x] Configure `Noto Sans SC` as the main font
+  - [x] Prepare template code for background animations in `src/layouts/BaseLayout.astro`
+- [x] Components & Content
+  - [x] Create `AsakuraQuote.svelte` with randomly rotating quotes
+  - [x] Inject the quote widget into the base layout
+  - [x] Define `fragments` content collection in `src/content/config.ts`
+  - [x] Create `src/pages/fragments.astro` or UI equivalent
+- [x] Data Synchronization
+  - [x] Create a synchronization script in the project for copying from Obsidian to `src/content`
+- [x] Cosmic Rain Splash Screen
+  - [x] Create `SplashScreen.astro` with CSS animations and DOM structure
+  - [x] Integrate into `src/layouts/Layout.astro`
+  - [x] Add `sessionStorage` logic for "play-once" control
+  - [x] Wrap `<slot />` and apply entry transition CSS

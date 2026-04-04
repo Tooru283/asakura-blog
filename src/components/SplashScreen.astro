@@ -1,0 +1,208 @@
+---
+// SplashScreen.astro (Interactive Cosmic Rain V2)
+---
+
+<div id="splash-root" class="fixed inset-0 z-[10000] overflow-hidden bg-[#010409] flex items-center justify-center">
+  
+  <!-- Back Layer: Deep Space & Ocean Gradient -->
+  <div id="splash-bg" class="absolute inset-0 w-[120%] h-[120%] -top-[10%] -left-[10%] transition-transform duration-[600ms] ease-out pointer-events-none">
+    <div class="stars absolute inset-0"></div>
+    <div class="light-streaks absolute inset-0 opacity-40"></div>
+    <div class="glow-burst"></div>
+  </div>
+
+  <!-- Interactive Glass Portal -->
+  <div id="glass-portal" class="relative z-10 w-[min(85vw,500px)] h-[min(65vh,350px)] rounded-[40px] border border-[rgba(255,255,255,0.1)] flex items-center justify-center flex-col gap-8 transition-transform duration-[600ms] ease-out shadow-[0_30px_60px_rgba(0,0,0,0.5)]">
+    
+    <!-- True blur background layered -->
+    <div class="portal-overlay absolute inset-0 rounded-[40px] bg-gradient-to-br from-[rgba(10,25,47,0.4)] to-[rgba(1,4,9,0.7)] backdrop-blur-2xl -z-10 overflow-hidden box-border">
+      <!-- Internal highlight for glassy edge -->
+      <div class="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] bg-gradient-to-br from-white/10 to-transparent rotate-45 pointer-events-none"></div>
+    </div>
+    
+    <div class="relative z-10 text-center flex flex-col items-center">
+      <h2 class="text-white text-sm font-light tracking-[0.3em] opacity-70 mb-10 drop-shadow-md">
+        TRANSPARENT RESPIRATION
+      </h2>
+      <button id="dive-btn" class="group relative px-8 py-3.5 rounded-full border border-[rgba(224,242,247,0.3)] text-white text-sm tracking-[0.15em] overflow-hidden transition-all duration-500 hover:border-[rgba(224,242,247,0.8)] hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(224,242,247,0.3)] bg-transparent cursor-pointer">
+        <span class="relative z-10 font-medium opacity-90 transition-opacity group-hover:opacity-100">去海边吗？</span>
+        <div class="absolute inset-0 bg-[#E0F2F7]/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 rounded-full"></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  body.splash-active {
+    overflow: hidden !important; 
+  }
+
+  /* Transition for main content */
+  #main-content-wrapper {
+    will-change: transform, opacity, filter;
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(20px) scale(0.98);
+    transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #main-content-wrapper.splash-entered {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0) scale(1);
+  }
+
+  /* Force hide splash immediately if played to prevent flash during route changes */
+  html.splash-played #splash-root {
+    display: none !important;
+  }
+  html.splash-played #main-content-wrapper {
+    opacity: 1 !important;
+    filter: blur(0px) !important;
+    transform: none !important;
+    transition: none !important;
+  }
+</style>
+
+<style>
+  #splash-root {
+    perspective: 1500px;
+  }
+  
+  /* Gradient glowing orb at the bottom representing Dawn/Ocean */
+  .glow-burst {
+    position: absolute;
+    bottom: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 80vw;
+    background: radial-gradient(circle, rgba(10,25,47,0.6) 0%, rgba(1,4,9,0) 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Minimal CSS Starfield generation using multiple shadows */
+  .stars {
+    z-index: 0;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow: 
+      15vw 20vh 1px 1px rgba(255,255,255,0.7),
+      75vw 80vh 1px 1px rgba(255,255,255,0.9),
+      50vw 50vh 2px 2px rgba(255,255,255,0.3),
+      85vw 30vh 1px 1px rgba(255,255,255,0.5),
+      25vw 70vh 1px 1px rgba(255,255,255,0.8),
+      40vw 10vh 1px 0px rgba(255,255,255,0.6),
+      90vw 90vh 0px 1px rgba(255,255,255,0.9);
+    animation: slowDrift 20s linear infinite;
+  }
+
+  /* Rain effect / Light streaks */
+  .light-streaks {
+    background-image: 
+      linear-gradient(180deg, rgba(224,242,247,0) 0%, rgba(224,242,247,0.5) 50%, rgba(224,242,247,0) 100%),
+      linear-gradient(180deg, rgba(224,242,247,0) 0%, rgba(224,242,247,0.2) 50%, rgba(224,242,247,0) 100%);
+    background-size: 1px 250px, 2px 400px;
+    background-position: 25% 0, 75% 150px;
+    background-repeat: repeat-y;
+    animation: rainFall 2.5s linear infinite;
+    transform-origin: center;
+    /* Static tilt to simulate deep crosswind */
+    transform: rotate(10deg) scale(1.5);
+    z-index: 0;
+  }
+
+  @keyframes rainFall {
+    0% { background-position: 25% -250px, 75% -400px; }
+    100% { background-position: 25% 100vh, 75% 150vh; }
+  }
+
+  @keyframes slowDrift {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50px); }
+  }
+</style>
+
+<script is:inline>
+  // Execute synchronously during server or initial paint to block flash
+  if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('splash_shown')) {
+    document.documentElement.classList.add('splash-played');
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    const splashRoot = document.getElementById('splash-root');
+    const mainWrapper = document.getElementById('main-content-wrapper');
+    const portal = document.getElementById('glass-portal');
+    const bg = document.getElementById('splash-bg');
+    const btn = document.getElementById('dive-btn');
+
+    // 1. Session Storage check for view transition routing
+    if (sessionStorage.getItem('splash_shown')) {
+      if (splashRoot) splashRoot.remove();
+      if (mainWrapper) mainWrapper.classList.add('splash-entered');
+      return;
+    }
+
+    document.body.classList.add('splash-active');
+
+    // 2. Interactive Parallax (Wind mapping)
+    if (splashRoot && portal && bg) {
+      splashRoot.addEventListener('mousemove', (e) => {
+        // Calculate normalized values from -1 to 1
+        const x = (e.clientX / window.innerWidth) * 2 - 1;
+        const y = (e.clientY / window.innerHeight) * 2 - 1;
+        
+        // Portal tilt
+        portal.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateZ(30px)`;
+        // Bg shift
+        bg.style.transform = `translate(${x * -1.5}%, ${y * -1.5}%)`;
+      });
+      
+      // Reset on leave
+      splashRoot.addEventListener('mouseleave', () => {
+        portal.style.transform = `rotateY(0deg) rotateX(0deg) translateZ(0)`;
+        bg.style.transform = `translate(0, 0)`;
+      });
+    }
+
+    // 3. Click Event - Dive into Ocean
+    if (btn && portal && bg && mainWrapper && splashRoot) {
+      btn.addEventListener('click', () => {
+        // Stop pointer events
+        btn.style.pointerEvents = 'none';
+        splashRoot.style.pointerEvents = 'none';
+
+        // Animate out portal
+        portal.style.transition = 'all 1.2s cubic-bezier(0.8, 0, 0.2, 1)';
+        portal.style.transform = 'scale(5) translateZ(200px)';
+        portal.style.opacity = '0';
+        
+        // Animate out background
+        bg.style.transition = 'all 1.5s cubic-bezier(0.6, 0, 0.4, 1)';
+        bg.style.opacity = '0';
+        bg.style.transform = 'scale(1.2)';
+
+        // Fade out root base
+        splashRoot.style.transition = 'background-color 1.5s ease';
+        splashRoot.style.backgroundColor = 'transparent';
+
+        // Trigger main content
+        setTimeout(() => {
+          mainWrapper.classList.add('splash-entered');
+        }, 300);
+
+        // Terminate
+        setTimeout(() => {
+          splashRoot.remove();
+          document.body.classList.remove('splash-active');
+          document.documentElement.classList.add('splash-played');
+          sessionStorage.setItem('splash_shown', 'true');
+        }, 1500);
+      });
+    }
+  });
+</script>

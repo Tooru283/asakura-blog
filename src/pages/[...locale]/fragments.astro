@@ -1,0 +1,69 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { i18n } from "astro:config/client";
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (() => {
+  const paths = [];
+  for (const locale of i18n.locales) {
+    const localeCode = typeof locale === 'string' ? locale : locale.path;
+    const localeParam = localeCode === i18n.defaultLocale ? undefined : localeCode;
+    paths.push({ params: { locale: localeParam } });
+  }
+  return paths;
+}) satisfies GetStaticPaths;
+
+const allFragments = await getCollection('fragments');
+allFragments.sort((a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
+
+const renderedFragments = await Promise.all(allFragments.map(async (fragment) => {
+  let content = null;
+  try {
+     if (typeof render === 'function') {
+        const result = await render(fragment);
+        content = result.Content;
+     } else if (typeof fragment.render === 'function') {
+        const result = await fragment.render();
+        content = result.Content;
+     }
+  } catch (e) {
+      console.error(e);
+  }
+  // 从 id 中提取标题（去掉扩展名、路径分隔符）
+  const rawTitle = fragment.id.replace(/\.md$/, '').split('/').pop() || fragment.id;
+  return { ...fragment, Content: content, displayTitle: rawTitle };
+}));
+
+---
+<Layout title="碎碎念 - Fragments">
+  <div class="max-w-[700px] mx-auto px-4 py-20 pb-32">
+    <h1 class="text-3xl font-light mb-16 text-center text-[var(--link-color)]" style="letter-spacing: 0.1em;">
+      Fragments
+    </h1>
+    <div class="flex flex-col gap-10">
+      {renderedFragments.map((fragment, index) => (
+         <div class="glass-panel p-6 rounded-2xl reveal-blur active" style={{ animationDelay: `${(index % 4) * 0.1}s` }}>
+            <div class="flex items-baseline justify-between mb-4 gap-4">
+              <h2 class="text-base font-light text-[var(--link-color)] opacity-80 truncate" style="letter-spacing: 0.05em;">
+                {fragment.displayTitle}
+              </h2>
+              <span class="text-xs opacity-50 font-mono flex-shrink-0">
+                {new Date(fragment.data.date).toISOString().split('T')[0]}
+              </span>
+            </div>
+            <div class="prose max-w-none text-[var(--text-color)] opacity-90 leading-relaxed font-light">
+               {fragment.Content ? <fragment.Content /> : <div set:html={fragment.body} />}
+            </div>
+         </div>
+      ))}
+      
+      {renderedFragments.length === 0 && (
+        <div class="text-center opacity-50 py-12 glass-panel rounded-2xl p-6">
+          <p>海风还没有带来任何消息...</p>
+          <p class="text-sm mt-2 font-mono">(No fragments found in src/content/fragments/)</p>
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>
