@@ -17,19 +17,29 @@ const t = i18nit(currentLang);
 const getLocalePath = (path: string, targetLocale: string) => {
   const currentPath = Astro.url.pathname;
   const defaultLocale = i18n?.defaultLocale || "zh-cn";
+  const basePrefix = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
   
+  // 去掉站点 base 前缀后再进行语言路径计算
   // 移除当前语言前缀
   let basePath = currentPath;
+  if (basePrefix && currentPath.startsWith(basePrefix)) {
+    basePath = currentPath.slice(basePrefix.length) || "/";
+  }
+
   if (currentLang && currentLang !== defaultLocale) {
-    basePath = currentPath.replace(`/${currentLang}`, "") || "/";
+    if (basePath === `/${currentLang}`) {
+      basePath = "/";
+    } else if (basePath.startsWith(`/${currentLang}/`)) {
+      basePath = basePath.slice(currentLang.length + 1) || "/";
+    }
   }
   
   // 添加目标语言前缀（默认语言不需要前缀）
   if (targetLocale && targetLocale !== defaultLocale) {
-    return `/${targetLocale}${basePath}`;
+    return baseUrl(`/${targetLocale}${basePath}`);
   }
   
-  return basePath;
+  return baseUrl(basePath);
 };
 
 const indexPage = getRelativeLocaleUrl(currentLang, "/");

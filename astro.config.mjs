@@ -22,8 +22,8 @@ import svelte from "@astrojs/svelte";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://Tooru283.github.io', // GitHub Pages 域名
-  base: 'asakura-blog', // GitHub 仓库名
+  site: 'https://tooru283.github.io', // GitHub Pages 域名
+  base: '/asakura-blog', // GitHub 仓库名
   i18n: {
     locales: ['zh-cn', 'en'],
     defaultLocale: 'zh-cn',
