@@ -1,4 +1,4 @@
-import { i18n } from "astro:config/client";
+const defaultLocale = "en";
 
 // Import translation files for different locales
 import zhCN from "./language/zh-cn.ts";
@@ -26,7 +26,7 @@ function i18nit(language: string): (key: string, params?: Record<string, string 
 	 * @param key - Translation key to look up
 	 * @returns Translation value from target language or default locale, undefined if not found
 	 */
-	const fallback = (key: string) => nested(language, key) || nested(i18n!.defaultLocale, key);
+	const fallback = (key: string) => nested(language, key) || nested(defaultLocale, key);
 
 	/**
 	 * Main translation function with parameter interpolation

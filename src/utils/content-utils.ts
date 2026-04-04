@@ -18,16 +18,22 @@ export async function getBlogEntrySort(
   filter?: (entry: CollectionEntry<'blog'>) => boolean | undefined,
   sort?: (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => number
 ): Promise<BlogEntryWithLocaleStatus[]> { // 修改返回类型
-  
-  const defaultFilter = ({ data }: CollectionEntry<'blog'>) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
+  const importedContentOnly = (entry: CollectionEntry<'blog'>) => entry.id.startsWith('fragments/');
+
+  const defaultFilter = (entry: CollectionEntry<'blog'>) => {
+    const visible = import.meta.env.PROD ? entry.data.draft !== true : true;
+    return visible && importedContentOnly(entry);
   };
+
+  const effectiveFilter = filter
+    ? (entry: CollectionEntry<'blog'>) => importedContentOnly(entry) && Boolean(filter(entry))
+    : defaultFilter;
 
   const defaultSort = (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => {
     return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
   };
 
-  const blogEntries = await getCollection('blog', filter || defaultFilter);
+  const blogEntries = await getCollection('blog', effectiveFilter);
 
   const grouped = new Map<string, Record<string, CollectionEntry<'blog'>>>();
   const defaultLanguage = i18n.defaultLocale;

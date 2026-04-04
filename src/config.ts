@@ -7,10 +7,10 @@ import type {
 import type { FriendLink } from "./types/friend"
 
 export const siteConfig: SiteConfig = {
-    title: "Momo",
-    subTitle: "Blog",
+    title: "Moca",
+    subTitle: "Tooru",
 
-    favicon: "/favicon/favicon.ico", // Path of the favicon, relative to the /public directory
+    favicon: "/favicon/283.ico", // Path of the favicon, relative to the /public directory
 
     pageSize: 6, // Number of posts per page
     toc: {
