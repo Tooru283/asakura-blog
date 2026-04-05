@@ -20,3 +20,15 @@
   - [x] Integrate into `src/layouts/Layout.astro`
   - [x] Add `sessionStorage` logic for "play-once" control
   - [x] Wrap `<slot />` and apply entry transition CSS
+- [x] Focus Dive Mode
+  - [x] Add transition classes and `.focus-dive-active` CSS in `global.css`
+  - [x] Inject Focus Dive Engine JS script in `Layout.astro` with 15s timer
+  - [x] Verify functionality (elements fade out on idle, reappear on interaction)
+- [x] Ambient Player (潮汐脉搏)
+  - [x] Create `AmbientPlayer.svelte` with minimal interface and continuous state
+  - [x] Inject into `Layout.astro` with `transition:persist`
+- [x] Ambient Background (环境立体背景层)
+  - [x] Copy `bg-tooru.webp` to `public/` directory
+  - [x] Create `AmbientBackground.astro` with Z-index layers (`noise`, `ripples`, `silhouette`)
+  - [x] Remove hardcoded background CSS from `global.css` and `Layout.astro`
+  - [x] Inject `<AmbientBackground />` into layout

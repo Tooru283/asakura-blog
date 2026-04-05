@@ -7,16 +7,12 @@
 @layer base {
 
   :root {
-    background-color: var(--bg-color);
-    background-image: var(--bg-color-gradient, none);
     color: var(--text-color);
   }
 
   body {
     @apply text-[--text-color];
-    background-color: var(--bg-color);
-    background-image: var(--bg-color-gradient, none);
-    background-attachment: fixed;
+    background-color: transparent !important;
     font-family: "Noto Sans SC", sans-serif;
     overflow-y: scroll;
   }
@@ -51,6 +47,30 @@
   ::-moz-selection {
     background-color: var(--button-hover-color);
     /* color: var(--text-color); */
+  }
+
+  /* --- Focus Dive Mode Styles --- */
+  /* Target non-core elements to fade gracefully */
+  #main-header, #nav-bar, footer {
+    transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: opacity, transform;
+  }
+
+  body.focus-dive-active #main-header {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none !important;
+  }
+
+  body.focus-dive-active #nav-bar {
+    opacity: 0;
+    transform: translateY(-5px) translateX(-50%); /* keep horizontally centered */
+    pointer-events: none !important;
+  }
+
+  body.focus-dive-active footer {
+    opacity: 0;
+    pointer-events: none !important;
   }
 
 }

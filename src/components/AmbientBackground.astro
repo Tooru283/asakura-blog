@@ -1,0 +1,51 @@
+---
+// AmbientBackground.astro
+import { baseUrl } from "@utils/url-utils";
+---
+<!-- Ambient Background Wrapper -->
+<div class="fixed inset-0 w-full h-full overflow-hidden pointer-events-none select-none" style="z-index: -100;">
+  
+  <!-- The deepest layer, Silhouette Image -->
+  <div class="absolute inset-0 flex items-center justify-center" style="z-index: -104;">
+    <!-- Removed heavy brightness filters to let the image show up! -->
+    <img src={baseUrl("/bg-tooru.webp")} alt="Background Silhouette" class="object-cover w-full h-full opacity-80" />
+  </div>
+
+  <!-- The Color Gradient Overlay (acts as the main frosted glass color) -->
+  <div class="absolute inset-0 bg-[var(--bg-color)] backdrop-blur-md" style="z-index: -103; opacity: 0.5;"></div>
+  <div class="absolute inset-0 bg-[var(--bg-color-gradient)] mix-blend-overlay" style="z-index: -103; opacity: 0.4;"></div>
+
+  <!-- Suble Ocean Ripples at bottom -->
+  <div class="ocean-ripple absolute bottom-0 left-0 w-full h-[35vh]" style="z-index: -102;"></div>
+
+  <!-- SVG Film Noise Filter -->
+  <svg width="0" height="0" class="hidden">
+    <filter id="noiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch" />
+    </filter>
+  </svg>
+  <div class="absolute inset-0 mix-blend-multiply dark:mix-blend-overlay" style="z-index: -101; opacity: 0.15; filter: url(#noiseFilter);"></div>
+
+</div>
+
+<style>
+  .ocean-ripple {
+    background: radial-gradient(ellipse at bottom, rgba(126, 184, 212, 0.45) 0%, rgba(10, 25, 47, 0) 70%);
+    animation: ripple 8s ease-in-out infinite alternate;
+  }
+  
+  :global([data-theme="dark"]) .ocean-ripple {
+    background: radial-gradient(ellipse at bottom, rgba(126, 184, 212, 0.15) 0%, rgba(10, 25, 47, 0) 70%);
+  }
+
+  @keyframes ripple {
+    0% {
+      opacity: 0.5;
+      transform: scaleY(1);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleY(1.1);
+    }
+  }
+</style>

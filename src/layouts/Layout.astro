@@ -7,6 +7,8 @@ import 'photoswipe/style.css'
 import { i18n } from "astro:config/client";
 import { ClientRouter } from "astro:transitions";
 import AsakuraQuote from '../components/AsakuraQuote.svelte';
+import AmbientPlayer from '../components/AmbientPlayer.svelte';
+import AmbientBackground from '../components/AmbientBackground.astro';
 import SplashScreen from '../components/SplashScreen.astro';
 import { baseUrl } from "@utils/url-utils";
 
@@ -58,7 +60,8 @@ const rssHref = Astro.site ? new URL(baseUrl("/rss.xml"), Astro.site) : baseUrl(
     <title>{pageTitle}</title>
     <ClientRouter />
 </head>
-<body class="h-full bg-[var(--bg-color)]">
+<body class="h-full bg-transparent">
+    <AmbientBackground />
     
     <div id="loading-overlay" aria-hidden="true">
       <div class="spinner"></div>
@@ -73,6 +76,7 @@ const rssHref = Astro.site ? new URL(baseUrl("/rss.xml"), Astro.site) : baseUrl(
       <slot />
     </div>
     
+    <AmbientPlayer client:load transition:persist="ambient-player" />
     <AsakuraQuote client:load />
 
     <script is:inline>
@@ -100,6 +104,36 @@ const rssHref = Astro.site ? new URL(baseUrl("/rss.xml"), Astro.site) : baseUrl(
             const overlay = document.getElementById('loading-overlay');
             if (overlay) overlay.style.display = 'none';
         });
+        </script>
+        
+        <!-- Focus Dive Engine (深海潜游模式) -->
+        <script is:inline>
+            let focusDiveTimeout = null;
+            const IDLE_TIME = 15000; // 15s idleness threshold
+
+            function resetFocusDive() {
+                if (document.body.classList.contains('focus-dive-active')) {
+                    document.body.classList.remove('focus-dive-active');
+                }
+                clearTimeout(focusDiveTimeout);
+                focusDiveTimeout = setTimeout(() => {
+                    // Do not apply if Splash Screen is still running
+                    if (!document.body.classList.contains('splash-active')) {
+                        document.body.classList.add('focus-dive-active');
+                    }
+                }, IDLE_TIME);
+            }
+
+            function initFocusDive() {
+                const events = ['mousemove', 'scroll', 'keydown', 'touchstart', 'click'];
+                events.forEach(evt => {
+                    document.removeEventListener(evt, resetFocusDive); // clean up existing before adding
+                    document.addEventListener(evt, resetFocusDive, { passive: true });
+                });
+                resetFocusDive();
+            }
+
+            document.addEventListener('astro:page-load', initFocusDive);
         </script>
 </body>
 </html>

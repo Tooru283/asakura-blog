@@ -1,58 +1,33 @@
-# Momo
+# Blogos / Transparent Respiration 🌊
 
 <div align="center">
-    <img src="./doc/images/dark-light.jpg">
-    <p>一个极简的Blog模板，使用 <a href="https://astro.build/">Astro</a> 搭建</p>
-    <small><ins>简体中文</ins></small> <small><a href="./doc/README_en.md">English</a></small> 
+    <h2>透明的呼吸感 (Transparent Respiration)</h2>
+    <p>基于 <b>浅仓透 (Asakura Toru)</b> 的印象意境设计，基于 <a href="https://astro.build/">Astro</a> 与 <a href="https://github.com/Motues/Momo">Momo 模板</a> 深度定制重构的博客引擎。</p>
 </div>
 
-## ✨ 特性
+## ✨核心美学 (Aesthetics)
+我们从“风、海、宇宙”中汲取灵感，摒弃了传统的平铺直叙，为“观测记录”与“碎碎念”提供了一个绝对静谧、清透的容器。
 
-Momo 取自小红书📕，每个新用户最初的昵称，象征着初始新生。博客的设计理念也来自于此，从简约出发，在复杂功能与简约设计之间达到一种平衡。
+* **毛玻璃质感 (Glassmorphism)**：全局采用 `backdrop-filter` 搭建视觉层叠。界面不再是阻挡，而是像水面一样透射后方流动的光影。
+* **潜入式交互 (Dive-In Portal)**：拥有一个 3D 视差引导的动态环境入口，用户化身为“风”，通过点击破除毛玻璃“沉降”至博客主世界，每次浏览如同一次深海潜水。
+* **绝对的冷峻色调**：日间（过曝白 `#FDFDFD` 到 浅海蓝 `#E0F2F7`）；夜间（深海蓝 `#0A192F` 沉降至 宇宙黑 `#010409`）。
+* **思源黑体 (Noto Sans SC)**：全站字体极致克制，追求足够的行距与呼吸感留白。
 
-* **极简设计**：页面设计简约，黑白为主色调，蓝色进行点缀
-* **深色模式**：支持手动切换或自动跟随系统
-* **文章搜索功能**：使用 [pagefind](https://pagefind.app/) 实现本地化搜索功能
-* **国际化（i18n）**：支持多语言切换，目前支撑简体中文、英文
-* **移动端适配**：组件针对移动端进行优化，拥有和电脑浏览器一样的流畅体验
-* **评论功能**：支持本地部署和 Cloudflare 部署，具体参考 [Backend](https://github.com/Motues/Momo-Backend)
-* **丰富的Markdown语法**：支持 Katex，Typst，Alert 组件，Github 卡片，自定义语法等
-* 其他基本功能：文章分类，目录，RSS订阅，文字统计，阅读时间
+## 🧩 拓展功能 (Features)
+* **语录挂件 (Asakura Quotes)**：角落自顾自悬浮的浅仓透语录挂件（Svelte 实现），在鼠标不经意的触发中传递偶像片段。
+* **碎碎念同步流 (Fragments Sync)**：通过定制的 Python 脚本，极速同步并平铺您的 Obsidian 日常沉淀，打造随性纯粹的时间流体验。
+* 完整继承自上游 Momo 的配置：支持页面搜索 (Pagefind)、多语言支持、RSS 等底层应用能力。
 
-## 🚀 快速开始
+## 🚀快速使用指南
+```bash
+# 安装依赖
+pnpm install
 
-1. 克隆本项目
-    ```bash
-    git clone https://github.com/Motues/Momo.git
-    cd Momo
-    ```
-2. 运行 `pnpm install` 安装依赖（使用 `npm install -g pnpm` 安装 `pnpm`）
-3. 运行 `pnpm dev` 启动开发服务器
+# 本地同步黑曜石(Obsidian)文章至碎片流
+python scripts/sync_obsidian.py
 
-## 🔧 配置
+# 启动开发服务器
+pnpm dev
+```
 
-参考[配置指南](./doc/config_zh-cn.md)，详细信息可以访问 [Momo](https://momo.motues.top/intro/config)，阅读对应文章获取详细信息。
-
-## 📚 更新
-
-参考[更新指南](./doc/release_zh-cn.md)，介绍如何更新项目，详细信息可以访问 [Momo](https://momo.motues.top/intro/release)。
-
-## ⚡ 指令
-
-以下所有的指令可以在根目录下面执行
-
-| 指令 | 作用 |
-| --- | --- |
-| `pnpm instal` | 安装依赖 |
-| `pnpm dev` | 启动本地服务器，运行在 `http://localhost:4321` |
-| `pnpm build` | 构建发布版本到 `./dist` 目录下 |
-| `pnpm preview` | 预览构建后的发布版本 |
-| `pnpm astro ...` | 运行 `astro` 命令，例如 `astro add` |
-| `pnpm newpost <path> <lang>` | 创建新文章，例如 `pnpm newpost docs/test.md zh-cn`，语言可以省略，默认为`zh-cn` |
-
-
-## 📚 参考
-
-* [Astro](https://astro.build/)
-* [Fuwari](https://github.com/saicaca/fuwari)
-* [Tyndall](https://github.com/moyuin-aka/tyndall-public)
+该系统专为“记录者”设计，兼顾了高维的视觉沉浸感与作为文字管理枢纽的极简原则。
